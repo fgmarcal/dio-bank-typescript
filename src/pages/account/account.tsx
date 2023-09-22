@@ -2,6 +2,7 @@
 import { useParams } from "react-router-dom";
 import MyHeader from "../../components/header/header";
 import { IUser } from "./types";
+import Balance from "../../components/balance/balance";
 
 
 const Account = ({user, account, balance}:IUser) => {
@@ -18,6 +19,7 @@ const Account = ({user, account, balance}:IUser) => {
                     {`Hello, ${user}`}
                 </h1>
             </div>
+            <Balance />
         </>
     )
 }

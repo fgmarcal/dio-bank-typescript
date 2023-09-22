@@ -1,5 +1,5 @@
 export interface IUser {
-    user? : string | undefined,
+    user? : string,
     account? : string,
     balance?: number,
 
