@@ -1,28 +1,33 @@
+import { useContext } from 'react';
 import { Container, Wrapper } from './styles';
 import { Link, useParams } from 'react-router-dom';
+import { AppContext } from '../context/context';
 
 interface IHead {
     user? : string,
-    logged? : boolean,
+    log? : boolean,
 }
 
-const MyHeader = ({user, logged}: IHead) => {
+const MyHeader = ({user, log}: IHead) => {
+
+    const {logged} = useContext(AppContext);
+
     const {username} = useParams();
     user = username?.slice(1);
 
-    if(user){
-        logged = true;
+    if(user&&logged){
+        log = true;
     }else{
-        logged = false;
+        log = false;
     }
     return (
         <>
             <Container>
                 <Wrapper>
                     <h1>MyBank</h1>
-                    <p> {logged? `Bem-vindo, ${user}` : ``}</p>
+                    <p> {log? `Bem-vindo, ${user}` : ``}</p>
                 </Wrapper>
-                {logged? <Link to={'/'} style={{color:"white", paddingLeft:"2rem"}}>Logout</Link> : null}
+                {log? <Link to={'/'} style={{color:"white", paddingLeft:"2rem"}}>Logout</Link> : null}
             </Container>
         </>
     )

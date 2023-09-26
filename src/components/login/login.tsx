@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import { db } from '../../database/database';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/context';
 
 
 type FieldType = {
     username?: string;
     password?: string;
-    remember?: string;
 };
 
 const Login: React.FC = () => {
 
+    const {logged, username} = useContext(AppContext)
+    const [login, setLogin] = useState(logged)
+    const [user, setUser] = useState(username)
+
     const navigate = useNavigate()
 
-    const onFinish = (values: FieldType) => {
-        const {username, password} = values;
-        for(let i = 0; i < db.length; i++){
-            if(username === db[i].user && password === db[i].password){
-                return navigate(`/account/:${username}`);
-            }else{
-                onFinishFailed("Bad username/password")
-            }
+    const validate = (values:FieldType) =>{
+      const {username, password} = values;
+      const found = db.find((e)=> username === e.user && password === e.password) 
+      found ? setLogin(true) : setLogin(false);
+      console.log(found)
+    }
+
+    const onFinish = async (values: FieldType) => {
+        validate(values);
+        const username = values.username;
+        if(login && username){
+          setUser(username);
+          navigate(`/account/:${user}`);
         }
     };
     
@@ -56,13 +65,6 @@ const Login: React.FC = () => {
       rules={[{ required: true, message: 'Please input your password!' }]}
     >
       <Input.Password />
-    </Form.Item>
-
-    <Form.Item<FieldType>
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{ offset: 8, span: 16 }}
-    >
     </Form.Item>
 
     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

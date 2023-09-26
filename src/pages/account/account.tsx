@@ -1,13 +1,17 @@
 
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MyHeader from "../../components/header/header";
 import { IUser } from "./types";
 import Balance from "../../components/balance/balance";
+import { useContext } from "react";
+import { AppContext } from "../../components/context/context";
 
 
 const Account = ({user, account, balance}:IUser) => {
+    const {logged, username} = useContext(AppContext)
+    const navigate = useNavigate();
 
-    const {username} = useParams()
+    !logged ?? navigate('/')
     
     user = username?.slice(1);
 
